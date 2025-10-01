@@ -18,6 +18,7 @@ export interface MediaInfo {
   image: string;
   favorite: boolean;
   player?: MediaPlayerInfo;
+  volume?: number;
 }
 
 export const getEmptyMediaInfo = () => {
@@ -42,6 +43,8 @@ export const getEmptyMediaInfo = () => {
       shuffle: true,
       repeat: RepeatState.all,
     },
+
+    volume: 69,
   };
 
   return emptyState;

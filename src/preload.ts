@@ -175,7 +175,7 @@ function addFullScreenListeners() {
  */
 function addIPCEventListeners() {
   window.addEventListener("DOMContentLoaded", () => {
-    ipcRenderer.on("globalEvent", (_event, args) => {
+    ipcRenderer.on("globalEvent", (_event, args, value) => {
       switch (args) {
         case globalEvents.playPause:
         case globalEvents.play:
@@ -196,6 +196,9 @@ function addIPCEventListeners() {
           break;
         case globalEvents.toggleRepeat:
           tidalController.repeat();
+          break;
+        case globalEvents.setVolume:
+          tidalController.setVolume(value);
           break;
         default:
           break;

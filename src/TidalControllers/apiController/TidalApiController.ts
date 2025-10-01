@@ -134,4 +134,8 @@ export class TidalApiController implements TidalController {
     globalThis.alert("Method not implemented");
     throw new Error("Method not implemented.");
   }
+  setVolume(): boolean {
+    globalThis.alert("Method not implemented");
+    throw new Error("Method not implemented.");
+  }
 }

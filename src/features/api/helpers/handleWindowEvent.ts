@@ -10,3 +10,9 @@ export const handleWindowEvent = (mainWindow: BrowserWindow) => (res: Response, 
   mainWindow.webContents.send("globalEvent", action);
   res.sendStatus(200);
 };
+
+export const handleWindowEventWithValue =
+  (mainWindow: BrowserWindow) => (res: Response, action: string, value: any) => {
+    mainWindow.webContents.send("globalEvent", action, value);
+    res.sendStatus(200);
+  };

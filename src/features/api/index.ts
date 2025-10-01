@@ -7,8 +7,10 @@ import { settings } from "./../../constants/settings";
 import { addCurrentInfo } from "./features/current";
 import { addPlaybackControl } from "./features/player";
 import { addSettingsAPI } from "./features/settings/settings";
+import { addVolumeControl } from "./features/volume";
 import { addLegacyApi } from "./legacy";
 import swaggerSpec from "./swagger.json";
+import { Logger } from "../logger";
 
 /**
  * Function to enable TIDAL Hi-Fi's express api
@@ -28,11 +30,14 @@ export const startApi = (mainWindow: BrowserWindow) => {
     res.json(swaggerSpec);
   });
 
+  Logger.log("api initializing");
   // add features
   addLegacyApi(expressApp, mainWindow);
   addPlaybackControl(expressApp, mainWindow);
   addCurrentInfo(expressApp);
   addSettingsAPI(expressApp, mainWindow);
+  addVolumeControl(expressApp, mainWindow);
+  Logger.log("api initialized");
 
   const expressInstance = expressApp.listen(port, hostname);
   expressInstance.on("error", function (e: { code: string }) {

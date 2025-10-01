@@ -41,6 +41,7 @@ export class DomTidalController implements TidalController<DomControllerOptions>
     album_name_cell: '[class^="album"]',
     tracklist_row: '[data-test="tracklist-row"]',
     volume: '*[data-test="volume"]',
+    video: "video#video-one",
     favorite: '*[data-test="footer-favorite-button"]',
     /**
      * Get an element from the dom
@@ -216,6 +217,7 @@ export class DomTidalController implements TidalController<DomControllerOptions>
           shuffle: shuffleState,
           repeat: repeatState,
         },
+        volume: this.getVolume(),
       };
 
       this.updateSubscriber(updatedInfo);
@@ -350,5 +352,23 @@ export class DomTidalController implements TidalController<DomControllerOptions>
   }
   getSongIcon(): string {
     return this.elements.getSongIcon();
+  }
+
+  getVolume(): number {
+    const video = this.elements.get("video") as HTMLVideoElement;
+    if (video) {
+      return Math.round(video.volume * 100);
+    }
+    return 0;
+  }
+
+  setVolume(level: number): boolean {
+    const video = this.elements.get("video") as HTMLVideoElement;
+    if (video) {
+      const clampedLevel = Math.max(0, Math.min(100, level));
+      video.volume = clampedLevel / 100;
+      return true;
+    }
+    return false;
   }
 }

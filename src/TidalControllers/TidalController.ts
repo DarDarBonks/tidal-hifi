@@ -50,4 +50,5 @@ export interface TidalController<TBootstrapOptions = object> {
   getPlayingFrom(): string;
   getSongIcon(): string;
   isFavorite(): boolean;
+  setVolume(value: number): boolean;
 }
