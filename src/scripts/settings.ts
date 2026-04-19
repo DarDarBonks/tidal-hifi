@@ -190,10 +190,8 @@ export const createSettingsWindow = () => {
     height: 700,
     resizable: true,
     show: false,
-    transparent: false,
-    frame: true,
-    center: true,
-    autoHideMenuBar: true,
+    transparent: true,
+    frame: false,
     title: "TIDAL Hi-Fi settings",
     webPreferences: {
       preload: path.join(__dirname, "../pages/settings/preload.js"),
@@ -202,8 +200,6 @@ export const createSettingsWindow = () => {
       contextIsolation: false, // Required for nodeIntegration in settings page
     },
   });
-
-  settingsWindow.setMenu(null);
 
   settingsWindow.on("close", (event: Event) => {
     if (settingsWindow != null) {
@@ -234,8 +230,6 @@ export const showSettingsWindow = (tab = "general") => {
   // refresh data just before showing the window
   settingsWindow.webContents.send("refreshData");
   settingsWindow.show();
-  settingsWindow.focus();
-  settingsWindow.moveTop();
 };
 export const hideSettingsWindow = () => {
   settingsWindow?.hide();
