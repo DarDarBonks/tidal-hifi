@@ -240,8 +240,7 @@ export class MprisService {
       // that a D-Bus PropertiesChanged signal is only emitted when the actual
       // track changes, not on every 500 ms polling tick.  Emitting that signal
       // every 500 ms caused continuous allocation of D-Bus message objects in
-      // the dbus-next write buffer, which was the primary source of the memory
-      // leak reported in the issue.
+      // the dbus-next write buffer.
       const trackMetadataKey = JSON.stringify([
         mediaInfo.title,
         mediaInfo.artists,
