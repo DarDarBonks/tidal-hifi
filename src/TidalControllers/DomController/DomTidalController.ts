@@ -11,7 +11,7 @@ import type { DomControllerOptions } from "./DomControllerOptions";
 import { clickElement, getElement, getElementAttribute, getElementText } from "./domHelpers";
 
 export class DomTidalController implements TidalController<DomControllerOptions> {
-  private updateSubscriber: (state: Partial<MediaInfo>) => void;
+  private updateSubscriber!: (state: Partial<MediaInfo>) => void;
   private currentlyPlaying = MediaStatus.paused;
   private currentRepeatState: RepeatStateType = RepeatState.off;
   private currentShuffleState = false;
@@ -227,7 +227,7 @@ export class DomTidalController implements TidalController<DomControllerOptions>
       if (globalThis.location.href.includes("/album/")) {
         const albumName = globalThis.document.querySelector(UI_SELECTORS.album_header_title);
         if (albumName) {
-          return albumName.textContent;
+          return albumName.textContent ?? "";
         }
         //If listening to a playlist or a mix, get the album name from the list
       } else if (
@@ -239,7 +239,7 @@ export class DomTidalController implements TidalController<DomControllerOptions>
           const playingElement = window.document.querySelector(UI_SELECTORS.currentlyPlaying);
           const row = playingElement?.closest(UI_SELECTORS.mediaItem);
           if (row) {
-            return row.querySelector(UI_SELECTORS.album_name_cell).textContent;
+            return row.querySelector(UI_SELECTORS.album_name_cell)?.textContent ?? "";
           }
         }
       }

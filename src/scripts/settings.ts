@@ -8,7 +8,7 @@ import { getDefaultHotkeyConfig } from "../features/hotkeys";
 import { Logger } from "../features/logger";
 import { injectThemeCss } from "../features/theming/theming";
 
-let settingsWindow: BrowserWindow;
+let settingsWindow: BrowserWindow | null;
 /**
  * Build a migration step for several settings.
  * All settings will be checked and set to the default if non-existent.
@@ -201,7 +201,7 @@ export const createSettingsWindow = () => {
     },
   });
 
-  settingsWindow.on("close", (event: Event) => {
+  settingsWindow.on("close", (event: Electron.Event) => {
     if (settingsWindow != null) {
       event.preventDefault();
       settingsWindow.hide();
@@ -211,7 +211,7 @@ export const createSettingsWindow = () => {
   settingsWindow.loadURL(`file://${__dirname}/../pages/settings/settings.html`);
 
   settingsWindow.webContents.on("did-finish-load", () => {
-    injectThemeCss(app, settingsWindow.webContents);
+    if (settingsWindow) injectThemeCss(app, settingsWindow.webContents);
   });
 
   settingsWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -225,11 +225,11 @@ export const showSettingsWindow = (tab = "general") => {
     log("Settings window is not initialized. Attempting to create it.");
     createSettingsWindow();
   }
-  settingsWindow.webContents.send("goToTab", tab);
+  settingsWindow?.webContents.send("goToTab", tab);
 
   // refresh data just before showing the window
-  settingsWindow.webContents.send("refreshData");
-  settingsWindow.show();
+  settingsWindow?.webContents.send("refreshData");
+  settingsWindow?.show();
 };
 export const hideSettingsWindow = () => {
   settingsWindow?.hide();

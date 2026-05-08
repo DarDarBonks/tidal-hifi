@@ -187,7 +187,7 @@ function handleLogout() {
   const logoutOptions = ["Cancel", "Yes, please", "No, thanks"];
 
   dialog
-    .showMessageBox(null, {
+    .showMessageBox({
       type: "question",
       title: "Logging out",
       message: "Are you sure you want to log out?",
@@ -198,7 +198,7 @@ function handleLogout() {
       if (logoutOptions.indexOf("Yes, please") === result.response) {
         for (let i = 0; i < window.localStorage.length; i++) {
           const key = window.localStorage.key(i);
-          if (key.startsWith("_TIDAL_activeSession")) {
+          if (key?.startsWith("_TIDAL_activeSession")) {
             window.localStorage.removeItem(key);
             break;
           }

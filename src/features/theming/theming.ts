@@ -30,10 +30,7 @@ function parseThemeId(themeId: string): { source: "builtin" | "user" | "legacy";
  *   2. Bundled resources directory (process.resourcesPath/themes/)
  *   3. Local project themes/ directory (dev fallback)
  */
-export function resolveThemePath(
-  app: { getPath: (name: string) => string; isPackaged: boolean },
-  themeId: string,
-): string {
+export function resolveThemePath(app: Electron.App, themeId: string): string {
   const themesFolderName = "themes";
   const { source, name } = parseThemeId(themeId);
 
@@ -77,10 +74,7 @@ const insertedCssKeys = new WeakMap<Electron.WebContents, string[]>();
  * Previously-inserted stylesheets are removed first so repeated invocations
  * (e.g. across navigations) replace rather than stack.
  */
-export async function injectThemeCss(
-  app: { getPath: (name: string) => string; isPackaged: boolean },
-  webContents: Electron.WebContents,
-) {
+export async function injectThemeCss(app: Electron.App, webContents: Electron.WebContents) {
   // Remove any previously-injected CSS so we don't accumulate stylesheets.
   const previousKeys = insertedCssKeys.get(webContents) ?? [];
   for (const key of previousKeys) {

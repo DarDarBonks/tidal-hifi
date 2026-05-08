@@ -115,13 +115,13 @@ export class MprisService {
     if (!this.player) return;
 
     // Handle D-Bus errors and EPIPE errors
-    this.player.on("error", (error: Error) => {
+    this.player.on("error", ((error: Error) => {
       Logger.log("MPRIS error occurred:", error);
       if (this.isStreamError(error)) {
         Logger.log("MPRIS stream broken, attempting to reconnect...");
         this.handleStreamError();
       }
-    });
+    }) as (...args: object[]) => void);
   }
 
   private handleStreamError(): void {

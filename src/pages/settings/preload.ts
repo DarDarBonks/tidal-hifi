@@ -125,10 +125,11 @@ function getThemeFiles() {
 
 function handleFileUploads() {
   const fileMessage = document.getElementById("file-message");
+  if (!fileMessage) return;
   fileMessage.innerText = "or drag and drop files here";
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  document.getElementById("theme-files").addEventListener("change", async (e: any) => {
+  document.getElementById("theme-files")?.addEventListener("change", async (e: any) => {
     if (!e.target.files || e.target.files.length === 0) {
       fileMessage.classList.add("hidden");
       return;
@@ -163,6 +164,7 @@ function setElementHidden(
   toggleOptions: { switch: string; classToHide: string },
 ) {
   const element = document.getElementById(toggleOptions.classToHide);
+  if (!element) return;
 
   checked ? element.classList.remove("hidden") : element.classList.add("hidden");
 }
@@ -308,7 +310,7 @@ window.addEventListener("DOMContentLoaded", () => {
   getThemeFiles();
   handleFileUploads();
 
-  document.getElementById("close").addEventListener("click", hide);
+  document.getElementById("close")?.addEventListener("click", hide);
   document.getElementById("restartApp")?.addEventListener("click", () => {
     ipcRenderer.send(globalEvents.restartApp);
   });
@@ -317,7 +319,8 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   document.querySelectorAll(".external-link").forEach((elem) => {
     elem.addEventListener("click", (event) => {
-      openExternal((event.target as HTMLElement).getAttribute("data-url"));
+      const url = (event.target as HTMLElement).getAttribute("data-url");
+      if (url) openExternal(url);
     });
   });
 
@@ -380,7 +383,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   ipcRenderer.on("goToTab", (_, tab) => {
-    document.getElementById(tab).click();
+    document.getElementById(tab)?.click();
   });
 
   adBlock = get("adBlock");

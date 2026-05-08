@@ -10,7 +10,7 @@ import { settingsStore } from "./settings";
 
 const clientId = "833617820704440341";
 
-export let rpc: Client;
+export let rpc: Client | null;
 
 const ACTIVITY_LISTENING = 2;
 const MAX_RETRIES = 5;
@@ -49,7 +49,7 @@ const updateActivity = () => {
 
   if (isPausedAndHidden) {
     payloadKey = "clear";
-    send = () => rpc.user?.clearActivity();
+    send = () => rpc?.user?.clearActivity();
   } else {
     const activity = getActivity();
     payloadKey = JSON.stringify({
@@ -57,7 +57,7 @@ const updateActivity = () => {
       startTimestamp: undefined,
       endTimestamp: undefined,
     });
-    send = () => rpc.user?.setActivity(activity);
+    send = () => rpc?.user?.setActivity(activity);
   }
 
   if (payloadKey === lastActivityKey) return;
@@ -144,6 +144,7 @@ const getActivity = (): SetActivity => {
  * @param retryCount Max retry count
  */
 const connectWithRetry = async (retryCount = 0) => {
+  if (!rpc) return;
   try {
     await rpc.login();
     Logger.log("Connected to Discord");

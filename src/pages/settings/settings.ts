@@ -70,6 +70,7 @@ function skipArtist() {
 function updateTags() {
   const artistTagsContainer = document.getElementById("artist-tags");
   const skippedArtistsTextarea = document.getElementById("skippedArtists") as HTMLTextAreaElement;
+  if (!artistTagsContainer || !skippedArtistsTextarea) return;
   const artists = skippedArtistsTextarea.value
     .split("\n")
     .map((artist) => artist.trim())
@@ -92,6 +93,6 @@ function handleEnterKey(event: KeyboardEvent) {
   }
 }
 
-document.getElementById("add-artist").addEventListener("keydown", handleEnterKey);
-document.getElementById("skippedArtists").addEventListener("input", () => updateTags());
+document.getElementById("add-artist")?.addEventListener("keydown", handleEnterKey);
+document.getElementById("skippedArtists")?.addEventListener("input", () => updateTags());
 setTimeout(() => updateTags(), 100);

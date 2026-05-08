@@ -30,12 +30,12 @@ function scanAllElementsForStore() {
 }
 
 export class ReduxController implements TidalController<ReduxControllerOptions> {
-  private updateSubscriber: (state: Partial<MediaInfo>) => void;
+  private updateSubscriber!: (state: Partial<MediaInfo>) => void;
   private pollingIntervalId?: ReturnType<typeof setInterval>;
   private reduxStore: {
     dispatch: (action: { type: string; payload?: object | number }) => void;
     getState: () => ReduxStoreType;
-  } = null;
+  } | null = null;
 
   /**
    * Get a player element
@@ -60,13 +60,13 @@ export class ReduxController implements TidalController<ReduxControllerOptions> 
   }
 
   private dispatchAction(action: string, payload?: object | number): void {
-    if (this.isStoreAvailable()) {
+    if (this.isStoreAvailable() && this.reduxStore) {
       this.reduxStore.dispatch({ type: action, payload: payload });
     }
   }
 
   private useSelector<T>(selector: (state: ReduxStoreType) => T, fallback: T): T {
-    if (this.isStoreAvailable()) {
+    if (this.isStoreAvailable() && this.reduxStore) {
       try {
         const value = selector(this.reduxStore.getState());
         return value === undefined ? fallback : value;
